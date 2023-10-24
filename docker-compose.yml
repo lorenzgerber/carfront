@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+   web:
+      restart: always
+      image: node:20
+      command: sh -c "npm start"
+      working_dir: /code
+      volumes:
+        - ./:/code
+      ports:
+        - "3000:3000"
+   
