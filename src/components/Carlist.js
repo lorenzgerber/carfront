@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from '../constants';
+import AddCar from './AddCar.js';
 
 function Carlist() {
 
@@ -53,20 +54,40 @@ function Carlist() {
         
     }
 
+    const addCar = (car) => {
+        fetch(SERVER_URL + 'api/cars',
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(car)
+        })
+        .then(response => {
+            if (response.ok){
+                fetchCars();
+            } else {
+                alert('Something went wrong!');
+            }
+        })
+        .catch(err => console.error(err))
+    }
+
     return(
-       <div style={{ height: 500, width: '100%' }}>
-        <DataGrid
-            rows={cars}
-            columns={columns}
-            disableRowSelectionOnClick={true}
-            getRowId={row => row._links.self.href}/>
-        <Snackbar
-            open={open}
-            autoHideDuration={2000}
-            onClose={ () => setOpen(false)}
-            message="Car Deleted"
-        />
+        <React.Fragment>
+            <AddCar addCar={addCar} />
+            <div style={{ height: 500, width: '100%' }}>
+            <DataGrid
+                rows={cars}
+                columns={columns}
+                disableRowSelectionOnClick={true}
+                getRowId={row => row._links.self.href}/>
+            <Snackbar
+                open={open}
+                autoHideDuration={2000}
+                onClose={ () => setOpen(false)}
+                message="Car Deleted"
+            />
        </div>
+        </React.Fragment>
     );
 }
 
