@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, gridClasses } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from '../constants';
 import AddCar from './AddCar.js';
@@ -98,6 +98,15 @@ function Carlist() {
             .catch(err => console.error(err))
     }
 
+    function CustomToolbar(){
+        return(
+            <GridToolbarContainer
+                className={gridClasses.toolbarContainer}>
+                    <GridToolbarExport />
+                </GridToolbarContainer>
+        );
+    }
+
     return(
         <React.Fragment>
             <AddCar addCar={addCar} />
@@ -106,7 +115,9 @@ function Carlist() {
                 rows={cars}
                 columns={columns}
                 disableRowSelectionOnClick={true}
-                getRowId={row => row._links.self.href}/>
+                getRowId={row => row._links.self.href}
+                components={{ Toolbar: CustomToolbar}}
+            />
             <Snackbar
                 open={open}
                 autoHideDuration={2000}
